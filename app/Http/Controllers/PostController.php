@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+
 use App\Models\Post;
+use App\Http\Requests\PostRequest; // useする
 
 class PostController extends Controller
 {
     public function index(Post $post)
     {
-    return view('posts.index')->with(['posts' => $post->getPaginateByLimit(1)]);
+    return view('posts.index')->with(['posts' => $post->getPaginateByLimit()]);
        //blade内で使う変数'posts'と設定。'posts'の中身にgetを使い、インスタンス化した$postを代入。
     }
     
@@ -30,7 +31,7 @@ class PostController extends Controller
         return view('posts.create');
     }
     
-    public function store(Request $request, Post $post)
+    public function store(Post $post, PostRequest $request) // 引数をRequestからPostRequestにする
     {
         $input = $request['post'];
         $post->fill($input)->save();
